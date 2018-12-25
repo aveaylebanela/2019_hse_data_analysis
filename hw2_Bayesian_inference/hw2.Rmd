@@ -1,0 +1,27 @@
+---
+title: "hw2"
+output: pdf_document
+---
+```{r}
+library(tidyverse)
+p = read_csv('hw2_phoible.csv')
+```
+### 2.1
+```{r}
+p %>%
+ mutate(proportion = consonants/phonemes) %>%
+ filter(proportion == max(proportion)) %>%
+ select(language)
+```
+### 2.2
+```{r}
+a = 9.300246
+b = 4.4545
+p %>%
+ mutate(module = abs((consonants / phonemes) - ((consonants + a)/(phonemes + a + b)))) -> p
+p %>% 
+  arrange(desc(module)) %>% 
+  head() %>% 
+  select(language)
+```
+
