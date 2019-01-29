@@ -1,0 +1,40 @@
+```{r}
+library(dplyr)
+
+data_1 <- read.csv('hw3_phoible.csv')
+data_2 <- read.csv('https://raw.githubusercontent.com/agricolamz/2019_data_analysis_for_linguists/master/data/letter_frequency.csv')
+data_3 <- read.csv('hw3_task_3.csv')
+```
+### 3.1
+```{r}
+data_1
+
+data_1 %>%
+  mutate(likelihood = dnorm(consonants, 22, 6)) -> data_1
+res = prod(data_1$likelihood)
+
+print(res)
+```
+
+### 3.2
+
+```{r}
+data_2
+
+langs <- colnames(data_3)[1:13]
+data_frame(lang = langs,
+           prior = 1/length(langs),
+           likelihood = as.numeric(filter(data_2, letter == 'm')[1:13]) * as.numeric(filter(data_2, letter == 'o')[1:13]) * as.numeric(filter(data_2, letter == 's')[1:13]) * as.numeric(filter(data_2, letter == 't')[1:13]),
+           product = prior * likelihood,
+           posterior = product/sum(product)) -> results
+
+print(max(results$posterior))
+```
+
+### 3.3
+```{r}
+data_3
+
+(data_3$a[1] + 33)/(data_3$a[1] + 33 + data_3$b[1] + 77)
+```
+
