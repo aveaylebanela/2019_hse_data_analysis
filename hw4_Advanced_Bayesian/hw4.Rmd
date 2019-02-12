@@ -1,0 +1,27 @@
+### 4.1
+
+```{r}
+df <- read.csv(hw4_caretta.csv)
+
+sd_prior <- sd(df$vowel.dur)
+sd_brs <- sd(df[df$speaker == 'brs02',]$vowel.dur)
+sd_post <- (1/sd_prior+1/sd_brs)^(-1)
+
+mean_prior <- mean(df$vowel.dur, trim = 0.1)
+mean_brs <- mean(df[df$speaker == 'brs02',]$vowel.dur)
+mean_post <- weighted.mean(c(mean_prior, mean_brs), c(1/sd_prior, 1/sd_brs))
+
+data.frame(speaker = 'brs02', mean_post = mean_post, sd_post = sd_post)
+```
+### 4.2
+```{r}
+mean_tt <- mean(df[df$speaker == 'tt01',]$vowel.dur)
+sd_tt <- sd(df[df$speaker == 'tt01',]$vowel.dur)
+
+sd_post_tt <- (1/sd_prior+1/sd_tt)^(-1)
+mean_post_tt <- weighted.mean(c(mean_prior, mean_tt), c(1/sd_prior, 1/sd_tt))
+
+data.frame(speaker = 'tt01', int_left = qnorm(.025, sd = sd_post_tt, mean = mean_post_tt), int_right = qnorm(.975, sd = sd_post_tt, mean = mean_post_tt))
+```
+
+
